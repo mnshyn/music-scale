@@ -102,6 +102,8 @@
 			}
 		}
 
+		// getAccidental(): returns accidental in music notation form
+
 		public function getAccidental()
 		{
 			$accidental = "";
@@ -147,6 +149,8 @@
 			return $accidental;
 		}
 
+		// makeSharp(): raises note a half step
+
 		public function makeSharp()
 		{
 			if($this->accidental==3)
@@ -158,6 +162,8 @@
 				$this->accidental++;
 			}
 		}
+
+		// makeFlat(): drops note a half step
 
 		public function makeFlat()
 		{
@@ -171,10 +177,14 @@
 			}
 		}
 
+		// makeNatural(): resets note to natural
+
 		public function makeNatural()
 		{
 			$this->accidental = 0;
 		}
+
+		// isNoteValid(): checks note given for validity.  Returns TRUE if valid, returns FALSE if invalid.
 
 		private function isNoteValid($note)
 		{
@@ -187,6 +197,8 @@
 				return false;
 			}
 		}
+
+		// __toString(): returns note with accidental as a string
 
 		public function __toString()
 		{
