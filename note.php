@@ -7,18 +7,10 @@
 	circa 04.30.2012
 	*/
 
+	require_once("accidental.php");
+
 	class Note
 	{
-		// Constants for the accidental
-
-		const TRIPLE_FLAT = -3;
-		const DOUBLE_FLAT = -2;
-		const FLAT = -1;
-		const NATURAL = 0;
-		const SHARP = 1;
-		const DOUBLE_SHARP = 2;
-		const TRIPLE_SHARP = 3;
-
 		private $note;		// Note value from A to G
 		private $accidental;		// Natural, Sharp, Double Sharp, Flat or Double Flat
 
@@ -29,11 +21,18 @@
 			$this->setNote($note, $accidental);
 		}
 
-		// getNote(): get function for $note
+		// getNote(): get function for $note, including accidentals
 
 		public function getNote()
 		{
 			return $this->note . $this->getAccidental();
+		}
+
+		// getNote(): get function for $note, with no accidentals
+
+		public function getNoteWithoutAccidental()
+		{
+			return $this->note;
 		}
 
 		// setNote($note, $accidental): sets note and accidental values
@@ -46,54 +45,11 @@
 
 				if(!isset($accidental))
 				{
-					$this->accidental = 0;
+					$this->accidental = new Accidental("natural");
 				}
 				else
 				{
-					switch($accidental)
-					{
-						case 3:case "triple sharp":case "###":
-						{
-							$accidental = 3;
-							break;
-						}
-						case 2:case "double sharp":case "##":
-						{
-							$accidental = 2;
-							break;
-						}
-						case 1:case "sharp":case "#":
-						{
-							$accidental = 1;
-							break;
-						}
-						case -3:case "triple flat":case "bbb":
-						{
-							$accidental = -3;
-							break;
-						}
-						case -2:case "double flat":case "bb":
-						{
-							$accidental = -2;
-							break;
-						}
-						case -1:case "flat":case "b":
-						{
-							$accidental = -1;
-							break;
-						}
-						case 0:case "natural":
-						{
-							$accidental = 0;
-							break;
-						}
-						default:
-						{
-							throw new Exception("EXCEPTION: Invalid accidental given");
-						}
-					}
-
-					$this->accidental = $accidental;
+					$this->accidental = new Accidental($accidental);
 				}
 			}
 			else
@@ -106,60 +62,28 @@
 
 		public function getAccidental()
 		{
-			$accidental = "";
-
-			switch($this->accidental)
-			{
-				case self::SHARP:
-				{
-					$accidental = "#";
-					break;
-				}
-				case self::DOUBLE_SHARP:
-				{
-					$accidental = "##";
-					break;
-				}
-				case self::TRIPLE_SHARP:
-				{
-					$accidental = "###";
-					break;
-				}
-				case self::FLAT:
-				{
-					$accidental = "b";
-					break;
-				}
-				case self::DOUBLE_FLAT:
-				{
-					$accidental = "bb";
-					break;
-				}
-				case self::TRIPLE_FLAT:
-				{
-					$accidental = "bbb";
-					break;
-				}			
-				default:
-				{
-					$accidental = " natural";
-				}
-			}
-
-			return $accidental;
+			return $this->accidental->getSymbol();
 		}
+
+		public function getSemitones()
+		{
+			return $this->accidental->getSemitones();
+		}
+
 
 		// makeSharp(): raises note a half step
 
 		public function makeSharp()
 		{
-			if($this->accidental==3)
+			$semitones = $this->accidental->getSemitones();
+
+			if($semitones==3)
 			{
 				throw new Exception("EXCEPTION: ### is the maximum");
 			}
 			else
 			{
-				$this->accidental++;
+				$this->accidental->setValue($semitones+1);
 			}
 		}
 
@@ -167,13 +91,15 @@
 
 		public function makeFlat()
 		{
-			if($this->accidental==3)
+			$semitones = $this->accidental->getSemitones();
+
+			if($semitones==-3)
 			{
 				throw new Exception("EXCEPTION: bbb is the minimum");
 			}
 			else
 			{
-				$this->accidental--;
+				$this->accidental->setValue($semitones-1);
 			}
 		}
 
@@ -181,7 +107,7 @@
 
 		public function makeNatural()
 		{
-			$this->accidental = 0;
+			$this->accidental->setValue("natural");
 		}
 
 		// isNoteValid(): checks note given for validity.  Returns TRUE if valid, returns FALSE if invalid.
