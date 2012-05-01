@@ -7,7 +7,7 @@
 	circa 05.01.2012
 	*/
 
-	include("note.php");		// for Note class and Accidental class
+	require_once("note.php");		// for Note class and Accidental class
 
 	abstract class Scale
 	{
@@ -294,6 +294,16 @@
 		public function getScaleDegree($degree)
 		{
 			return $this->degrees[$degree];
+		}
+
+		// splitNote(Note $note): returns an array with (0) the individual note value and (1) accidental
+
+		public function splitNote(Note $note)
+		{
+			$note_info[0] = $note->getNoteWithoutAccidental();
+			$note_info[1] = $note->getAccidental();
+
+			return $note_info;
 		}
 
 		// __toString(): this prints out the scale for debugging purposes.
