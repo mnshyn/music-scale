@@ -74,7 +74,7 @@
 				case 0:case "natural":
 				{
 					$this->semitones = 0;
-					$this->symbol = " natural";
+					$this->symbol = "";
 					break;
 				}
 				default:
