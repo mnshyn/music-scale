@@ -21,6 +21,7 @@
 
 		function __construct($key, $accidental)
 		{		
+			parent::__construct();
 			$this->createScale($key, $accidental);
 		}
 
@@ -50,6 +51,8 @@
 			{
 				$this->makeNatural();
 			}
+
+			$minor_type = self::HARMONIC;
 
 			$this->conformScale();
 		}

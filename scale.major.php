@@ -14,6 +14,8 @@
 
 		function __construct($key, $accidental)
 		{
+			parent::__construct();
+			print_r($this->all_notes_sharp);
 			$this->createScale($key, $accidental);
 		}
 

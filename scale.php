@@ -15,21 +15,33 @@
 
 		public $degrees;
 
+		protected $intervals;
+
 		// following arrays are used to calculate note distances
 
-		protected $note_values = array("C", "D", "E", "F", "G", "A", "B");
+		protected $note_values;
 
-		protected $all_notes_sharp = array("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B");
-		protected $all_notes_flat = array("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B");
+		protected $all_notes_sharp;
+		protected $all_notes_flat;
 
 		// if the requested scale is overly complex, the scale will be simplified and the flag will be set to TRUE
 
 		protected $simplified_flag = false;
 
+		function __construct()
+		{
+			$this->note_values = array("C", "D", "E", "F", "G", "A", "B");
+
+			$this->all_notes_sharp = array("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B");
+			$this->all_notes_flat = array("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B");
+		}
+
 		// initializeScale($key, $accidental): Set first degree, and initialize to process the other degrees
 
 		protected function initializeScale($key, $accidental, $intervals)
 		{
+			$this->intervals = $intervals;
+
 			if(($accidental==2&&$key!="F"&&$key!="C")||($accidental==3&&($key=="F"||$key=="C")))
 			{
 				$simplified_key = $this->simplifyKey($key, $accidental);
@@ -325,6 +337,43 @@
 			$note_info[1] = $note->getAccidental();
 
 			return $note_info;
+		}
+
+		// transpose($half_steps): transposes scale by the given amount of half steps
+
+		public function transpose($half_steps)
+		{
+			if(!is_int($half_steps))
+			{
+				throw new Exception("EXCEPTION: parameter must be an integer");
+			}
+
+			$one = $this->degrees[1];
+
+			$one_index = array_search($one, $this->all_notes_sharp);
+
+			$new_index = $one_index + $half_steps;
+
+			if($new_index>=12)
+			{
+				$new_index -= 12;
+			}
+			else if($new_index<=0)
+			{
+				$new_index += 12;
+			}
+
+			$new_note = $this->all_notes_sharp[$new_index];
+
+			if(strlen($new_note)==1)
+			{
+				$this->initializeScale($new_note, "natural", $this->intervals);
+			}
+			else
+			{
+				$this->initializeScale(substr($new_note,0,1), substr($new_note,1,1), $this->intervals);
+			}
+
 		}
 
 		// __toString(): this prints out the scale for debugging purposes.

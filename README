@@ -1,14 +1,35 @@
+________________________________________________________________
 
-Functions and Methods for these classes:
+****************************************************************
+________________________________________________________________
 
-Note
-Accidental
-MajorScale
-MinorScale
+Music Scale
+________________________________________________________________
+
+****************************************************************
+________________________________________________________________
+
+The classes in this project aid in giving information about 
+musical scales, including building major and minor scales, transposing,
+and retrieving the relative minor or major of the scale given.
+
+Once any of these classes are instantiated, the object can be
+printed to show its contents.
+
+Note: object that contains a note letter and an accidental
+Accidental: object that contains the symbol and semitone value
+MajorScale: object that contains the Major Scale of the given key
+MinorScale: object that contains the Natural Minor Scale of the given key
 
 ________________________________________________________________
 
-Note Class:
+****************************************************************
+________________________________________________________________
+
+Functions and Methods:
+________________________________________________________________
+
+Note Class: 
 ________________________________________________________________
 
 getNote()
@@ -128,6 +149,11 @@ splitNote(Note $note) [inherited from Scale]
 returns a 2-element array with (0) note letter and (1) accidental
 ________________________________________________________________
 
+transpose($half_steps) [inherited from Scale]
+
+transposes current scale by the number of half steps given, >0 to go up, <0 to go down.
+________________________________________________________________
+
 ****************************************************************
 ________________________________________________________________
 
@@ -174,4 +200,9 @@ ________________________________________________________________
 splitNote(Note $note) [inherited from Scale]
 
 returns a 2-element array with (0) note letter and (1) accidental
+________________________________________________________________
+
+transpose($half_steps) [inherited from Scale]
+
+transposes current scale by the number of half steps given, >0 to go up, <0 to go down.
 ________________________________________________________________
