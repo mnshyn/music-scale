@@ -28,23 +28,24 @@
 
 		// initializeScale($key, $accidental): Set first degree, and initialize to process the other degrees
 
-		protected function initializeScale($key, $accidental)
+		protected function initializeScale($key, $accidental, $intervals)
 		{
 			if(($accidental==2&&$key!="F"&&$key!="C")||($accidental==3&&($key=="F"||$key=="C")))
 			{
 				$simplified_key = $this->simplifyKey($key, $accidental);
 				$key = $simplified_key[0];
 				$accidental = $simplified_key[1];
+
 			}
 
 			switch($accidental)
 			{
-				case 2:
+				case 2:case "#":
 				{
 					$accidental = "#";
 					break;
 				}
-				case 3:
+				case 3:case "b":
 				{
 					$accidental = "b";
 					break;
@@ -57,21 +58,28 @@
 			}
 
 			$first_note = $this->createNote($key, $accidental);
-	
+
 			$this->insertNote($first_note, 1);
+
 
 			if($this->degrees[1]->getSemitones()>=0&&($first_note!="F"))
 			{
-				$start_info[0] = array_search($this->degrees[1]->getNote(), $this->all_notes_sharp);
-				$start_info[1] = 2;
+				$note_index = array_search($this->degrees[1]->getNote(), $this->all_notes_sharp);
+				$notelist = 2;
 			}
 			else if($this->degrees[1]->getSemitones()<0||$first_note=="F")
 			{
-				$start_info[0] = array_search($this->degrees[1]->getNote(), $this->all_notes_flat);
-				$start_info[1] = 3;
+				$note_index = array_search($this->degrees[1]->getNote(), $this->all_notes_flat);
+				$notelist = 3;
 			}
 
-			return $start_info;
+			for($c=2; $c<=sizeOf($intervals)-1; $c++)
+			{
+				$new_note = $this->getNextNoteViaSemitones($note_index, $intervals[$c], $notelist);
+				$note_index+=$intervals[$c];
+
+				$this->insertNote($new_note, $c);
+			}
 		}
 
 		// createNote($note, $accidental): Creates a note object with the given $note and $accidental
@@ -135,6 +143,7 @@
 
 		protected function calculateSemitonesBetween($note1, $note2)
 		{
+
 			$note1_index = array_search($note1, $this->all_notes_sharp);
 			$note2_index = array_search($note2, $this->all_notes_sharp);
 
@@ -166,6 +175,10 @@
 
 				$distance = $note2_index - $note1_index;
 
+				//echo $c . ": n1i($note1): " . $note1 . ", n2i:($note2): " . $note2 . ", distance:" . $distance . "<br/>";
+
+				$semitone_adjustment = 0;
+
 				if($distance!=1&&$distance!=-6&&$distance!=-4)
 				{
 					if($distance==0)
@@ -177,6 +190,10 @@
 						else
 						{
 							$new_note = $this->note_values[$note2_index+1];
+	
+							$semitone_adjustment = $this->degrees[$d]->getSemitones();
+
+							//echo "<br/>" . $this->degrees[$d] . ": " . $semitone_adjustment . "<br/>";
 						}						
 					}
 					else
@@ -191,7 +208,9 @@
 						}
 					}
 
-					$semitone_distance = $this->calculateSemitonesBetween($new_note, $note2);
+					$semitone_distance = $this->calculateSemitonesBetween($new_note, $note2) + $semitone_adjustment;
+
+					//echo $c . ": " . $new_note . "," . $note2 . ", " . $semitone_distance . "->";
 
 					if(abs($semitone_distance)>=11)
 					{
@@ -199,7 +218,7 @@
 						{
 							$semitone_distance = abs($semitone_distance) - 10;
 						}
-						else if($distance>0)
+						else if($semitone_distance>0)
 						{
 							$semitone_distance = -($semitone_distance) + 10;
 						}
@@ -210,6 +229,8 @@
 
 					while($new_note_semitone_count!=$semitone_distance)
 					{
+						// echo $new_note_semitone_count . ", " . $semitone_distance . "<br/>";
+
 						if($new_note_semitone_count<$semitone_distance)
 						{
 							$new_note_object->makeSharp();
@@ -238,15 +259,15 @@
 			{
 				$index = array_search($key, $this->note_values);
 
-				if(strtolower($key)=="c")
+				if($key=="C")
 				{
 					$simplified_key[0] = "B";
-					$simplified_key[1] = 0;
+					$simplified_key[1] = "";
 				}
 				else
 				{
 					$simplified_key[0] = "E";
-					$simplified_key[1] = 0;	
+					$simplified_key[1] = "";	
 				}
 
 				$this->simplified_flag = true;
@@ -258,13 +279,13 @@
 					case "B":
 					{
 						$simplified_key[0] = "C";
-						$simplified_key[1] = 0;
+						$simplified_key[1] = "";
 						break;
 					}
 					case "E":
 					{
 						$simplified_key[0] = "F";
-						$simplified_key[1] = 0;
+						$simplified_key[1] = "";
 						break;
 					}
 					default:
@@ -272,7 +293,7 @@
 						$index = array_search($key, $this->note_values);
 
 						$simplified_key[0] = $this->note_values[$index+1];
-						$simplified_key[1] = 3;
+						$simplified_key[1] = "b";
 					}					
 				}
 
