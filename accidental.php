@@ -33,7 +33,7 @@
 
 		public function setValue($accidental)
 		{
-			switch($accidental)
+			switch(strtolower($accidental))
 			{
 				case 3:case "triple sharp":case "###":
 				{

@@ -1,0 +1,177 @@
+
+Functions and Methods for these classes:
+
+Note
+Accidental
+MajorScale
+MinorScale
+
+________________________________________________________________
+
+Note Class:
+________________________________________________________________
+
+getNote()
+
+returns note with accidental, e.g. C#
+________________________________________________________________
+
+getNoteWithoutAccidental()
+
+returns note without accidental, instead of C#, it will return C
+________________________________________________________________
+
+setNote()
+
+sets the note and accidental properties
+________________________________________________________________
+
+getAccidental()
+
+returns the symbol of the accidental as a string, e.g. #
+________________________________________________________________
+
+getSemitones()
+
+returns the amount of semitones applied on the natural note
+________________________________________________________________
+
+makeSharp()
+
+raises the note a half step without changing the note letter value, e.g. applying makeSharp() on C# makes C##, not D
+
+NOTE: Will raise an EXCEPTION if beyond 3 #'s, e.g. C### will raise an exception if makeSharp() is implemented
+________________________________________________________________
+
+makeFlat()
+
+drops the note a half step without changing the note letter value, e.g. applying makeSharp() on Db makes Dbb, not C
+
+NOTE: Will raise an EXCEPTION if beyond 3 b's, e.g. Cbbb will raise an exception if makeFlat() is implemented
+________________________________________________________________
+
+makeNatural()
+resets note to natural state, e.g. from C# to C
+
+________________________________________________________________
+
+isNoteValid($note)
+
+returns TRUE if note is valid (A-G), returns FALSE otherwise
+________________________________________________________________
+
+****************************************************************
+________________________________________________________________
+
+Accidental Class:
+________________________________________________________________
+
+setValue($accidental)
+
+sets Value of Accidental based on input; accepts semitone value, words, or symbols
+
+Valid inputs:
+3, "triple sharp", "###"
+2, "double sharp", "##"
+1, "sharp", "#"
+0, "natural"
+-1, "flat", "b"
+-2, "double flat", "bb"
+-3, "triple flat", "bbb"
+________________________________________________________________
+
+getSymbol()
+
+returns symbol of accidental
+________________________________________________________________
+
+getSemitones()
+
+returns semitone value that is applied to Note
+________________________________________________________________
+
+****************************************************************
+________________________________________________________________
+
+MajorScale Class:
+________________________________________________________________
+
+createScale($key, $accidental)
+
+creates Major Scale based on the key and accidental.
+
+Valid inputs:
+$key = [A-G]
+$accidental:
+0, 1, "natural" or [blank]
+2, "sharp"
+3, "flat"
+________________________________________________________________
+
+getRelativeMinor()
+
+returns Scale degree 6 as a Note object
+________________________________________________________________
+
+getScale() [inherited from Scale]
+
+returns an array of Note objects, starting with element 1 for direct correlation to scale degree numbers
+________________________________________________________________
+
+getScaleDegree($degree) [inherited from Scale]
+
+returns Note object at the given scale degree
+________________________________________________________________
+
+splitNote(Note $note) [inherited from Scale]
+
+returns a 2-element array with (0) note letter and (1) accidental
+________________________________________________________________
+
+****************************************************************
+________________________________________________________________
+
+MinorScale Class:
+________________________________________________________________
+
+createScale($key, $accidental)
+
+creates Natural Minor Scale based on the key and accidental.
+
+Valid inputs:
+$key = [A-G]
+$accidental:
+0, 1, "natural" or [blank]
+2, "sharp"
+3, "flat"
+________________________________________________________________
+
+getRelativeMajor()
+
+returns Scale degree 3 as a Note object
+________________________________________________________________
+
+makeHarmonic()
+
+Raises scale degree 7 a half step.  Will revert scale to natural before raising if necessary.
+________________________________________________________________
+
+makeNatural()
+
+Reverts scale to a natural minor.
+________________________________________________________________
+
+getScale() [inherited from Scale]
+
+returns an array of Note objects, starting with element 1 for direct correlation to scale degree numbers
+________________________________________________________________
+
+getScaleDegree($degree) [inherited from Scale]
+
+returns Note object at the given scale degree
+________________________________________________________________
+
+splitNote(Note $note) [inherited from Scale]
+
+returns a 2-element array with (0) note letter and (1) accidental
+________________________________________________________________
