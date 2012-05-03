@@ -155,6 +155,15 @@ ________________________________________________________________
 transpose($half_steps) [inherited from Scale]
 
 transposes current scale by the number of half steps given, >0 to go up, <0 to go down.
+This method will transform your current object.  Use getTransposedScale if you need to
+preserve the current object.
+________________________________________________________________
+
+getTransposedScale($half_steps) [inherited from Scale]
+
+transposes current scale by the number of half steps given, >0 to go up, <0 to go down.
+This method clones the current object, transposes it, then returns it, leaving the
+original object untouched.
 ________________________________________________________________
 
 ****************************************************************
@@ -208,4 +217,13 @@ ________________________________________________________________
 transpose($half_steps) [inherited from Scale]
 
 transposes current scale by the number of half steps given, >0 to go up, <0 to go down.
+This method will transform your current object.  Use getTransposedScale if you need to
+preserve the current object.
+________________________________________________________________
+
+getTransposedScale($half_steps) [inherited from Scale]
+
+transposes current scale by the number of half steps given, >0 to go up, <0 to go down.
+This method clones the current object, transposes it, then returns it, leaving the
+original object untouched.
 ________________________________________________________________
