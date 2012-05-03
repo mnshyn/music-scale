@@ -29,7 +29,7 @@
 
 		public function createScale($key, $accidental)
 		{
-			$minor_type = self::NATURAL;
+			$this->minor_type = self::NATURAL;
 
 			$intervals = array(0,0,1,2,2,1,2,2);
 			$this->initializeScale($key, $accidental, $intervals);
@@ -53,7 +53,7 @@
 			}
 	
 			$this->degrees[7]->makeSharp();
-			$minor_type = self::HARMONIC;
+			$this->minor_type = self::HARMONIC;
 
 			$this->conformScale();
 		}
@@ -65,6 +65,23 @@
 			$this->createScale($this->degrees[1]->getNoteWithoutAccidental(), $this->degrees[1]->getAccidental());
 
 			$this->conformScale();
+		}
+
+		// getTransposedScale($half_steps): override of the superclass function, that includes support for harmonic minor
+		{
+			if($this->minor_type != self::NATURAL)
+			{
+				$this->makeNatural();
+			}
+			
+			$new_scale = parent::getTranposedScale($half_steps);
+
+			if($this->minor_type == self::HARMONIC)
+			{
+				$new_scale->makeHarmonic();
+			}
+
+			return $new_scale;
 		}
 	}
 ?>
