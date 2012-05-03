@@ -26,7 +26,7 @@
 
 		// if the requested scale is overly complex, the scale will be simplified and the flag will be set to TRUE
 
-		protected $simplified_flag = false;
+		protected $simplified_flag;
 
 		function __construct()
 		{
@@ -34,6 +34,7 @@
 
 			$this->all_notes_sharp = array("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B");
 			$this->all_notes_flat = array("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B");
+			$this->simplified_flag = false;
 		}
 
 		// initializeScale($key, $accidental): Set first degree, and initialize to process the other degrees
@@ -374,6 +375,17 @@
 				$this->initializeScale(substr($new_note,0,1), substr($new_note,1,1), $this->intervals);
 			}
 
+		}
+
+		// getTransposedScale($half_steps): creates a copy of the current scale, transposes by the given amount of half steps, then returns the scale object.
+		
+		public function getTransposedScale($half_steps)
+		{
+			$new_scale = clone $this;
+
+			$new_scale->transpose($half_steps);
+
+			return $new_scale;
 		}
 
 		// __toString(): this prints out the scale for debugging purposes.
