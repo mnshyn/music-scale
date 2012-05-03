@@ -51,7 +51,8 @@
 			{
 				$this->makeNatural();
 			}
-
+	
+			$this->degrees[7]->makeSharp();
 			$minor_type = self::HARMONIC;
 
 			$this->conformScale();
