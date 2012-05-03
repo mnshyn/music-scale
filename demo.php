@@ -79,15 +79,34 @@
 			echo $GSharpMinorScale;
 		?>
 		<br/>
-		Transpose B Major by 5 Half Steps:<br/>
+		Create a scale with the current scale (B Major) transposed up by 5 Half Steps (E Major):<br/>
 		<?
-			$BMajorScale->transpose(5); // transpose B Major 5 half steps up (E Major)
+			$EMajorScale = $BMajorScale->getTransposedScale(5); // transpose B Major 5 half steps up (E Major)
+			echo $EMajorScale;
+		?>
+		<br/>
+		B Major Scale is still intact.<br/>
+		<?
+			echo $BMajorScale;
+		?>
+		<br/>
+		You can completely change B Major to the transposed version as well without creating a new instance.<br/>
+		<?
+			$BMajorScale->transpose(5);
+
+			echo $BMajorScale;
+		?>
+		<br/>
+		Use negative numbers to transpose downward.<br/>
+		<?
+			$BMajorScale->transpose(-5);
+
 			echo $BMajorScale;
 		?>
 		<br/>
 		Get the new E Major scale as an array, then display:<br/>
 		<?
-			$EMajorScaleArray = $BMajorScale->getScale(); // Get the scale as an array of Notes. To correspond with actual scale degrees, the array starts at element 1, not 0.
+			$EMajorScaleArray = $EMajorScale->getScale(); // Get the scale as an array of Notes. To correspond with actual scale degrees, the array starts at element 1, not 0.
 
 			for($c=1; $c<=sizeOf($EMajorScaleArray); $c++)
 			{
