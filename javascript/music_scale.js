@@ -1,5 +1,10 @@
 
-// Accidental Class
+/*
+	Accidental [JavaScript]
+	This class represents an accidental, including semitone value and symbol.
+	by Cromwel Pestano
+	circa 05.03.2012
+*/
 
 function Accidental(accidental)
 {
@@ -90,7 +95,12 @@ function Accidental(accidental)
 
 }
 
-// Note Class
+/*
+	Note [JavaScript]
+	This class represents a musical note including its accidental.
+	by Cromwel Pestano
+	circa 05.03.2012
+*/
 
 function Note(param_note, param_accidental)
 {
